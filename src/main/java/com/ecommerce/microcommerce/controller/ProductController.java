@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.exception.ProduitIntrouvableException;
 import com.ecommerce.microcommerce.model.Product;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(description = "Gestion des produits")
 @RestController
 public class ProductController {
 	@Autowired
@@ -31,7 +39,7 @@ public class ProductController {
 	}
 
 	//Récupérer la liste des produits
-//	@RequestMapping(value = "/Produits", method = RequestMethod.GET)
+//	@GetMapping(value = "/Produits/filtres")
 //	public MappingJacksonValue listeProduits() {
 //
 //		List<Product> produits = productDao.findAll();
@@ -45,6 +53,7 @@ public class ProductController {
 //	}
 
 	//Produit/{id}
+	@ApiOperation(value = "Récupérer un produit selon son ID")
 	@GetMapping(value = "Produits/{id}")
 	public Product afficherUnProduit(@PathVariable int id) throws ProduitIntrouvableException {
 		Product product = productDao.findById(id);
